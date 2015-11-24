@@ -1,0 +1,36 @@
+From 0998645db61a2abb542d199f650450a231b6242e Mon Sep 17 00:00:00 2001
+From: Igor Gnatenko <i.gnatenko.brain@gmail.com>
+Date: Tue, 24 Nov 2015 10:26:40 +0100
+Subject: [PATCH 1/2] support both py2/py3
+
+Signed-off-by: Igor Gnatenko <i.gnatenko.brain@gmail.com>
+---
+ CMakeLists.txt | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 97d2007..e10131b 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -17,7 +17,8 @@ include(${VTK_USE_FILE})
+ FIND_PACKAGE(SWIG REQUIRED)
+ INCLUDE(${SWIG_USE_FILE})
+ 
+-FIND_PACKAGE(PythonLibs)
++FIND_PACKAGE(PythonLibs ${PythonLibs_FIND_VERSION})
++FIND_PACKAGE (PythonInterp ${PYTHONLIBS_VERSION_STRING} REQUIRED)
+ INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_PATH})
+ 
+ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
+@@ -71,7 +72,7 @@ ENDIF (NOT HAVE_TR1)
+ 
+ 
+ # Finding python site-packages dir
+-execute_process( COMMAND python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(prefix='')" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE ) 
++execute_process( COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(prefix='')" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE )
+ 
+ INSTALL(TARGETS _ca_smoothing DESTINATION ${CMAKE_INSTALL_PREFIX}/${PYTHON_SITE_PACKAGES})
+ INSTALL(FILES ${CMAKE_BINARY_DIR}/lib/ca_smoothing.py DESTINATION ${CMAKE_INSTALL_PREFIX}/${PYTHON_SITE_PACKAGES})
+-- 
+2.6.3
+
